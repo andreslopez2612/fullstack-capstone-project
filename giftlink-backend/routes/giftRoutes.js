@@ -1,7 +1,6 @@
-const express = require('express');
+import express from 'express';
+import connectToDatabase from '../models/db.js';
 const router = express.Router();
-const connectToDatabase = require('../models/db');
-const { ObjectId } = require('mongodb');
 
 // Get all gifts
 
@@ -62,4 +61,4 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router;

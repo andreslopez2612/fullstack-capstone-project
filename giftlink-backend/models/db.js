@@ -1,6 +1,6 @@
 // db.js
-require('dotenv').config();
-const MongoClient = require('mongodb').MongoClient;
+import 'dotenv/config';
+import { MongoClient } from 'mongodb';
 
 // MongoDB connection URL with authentication options
 let url = `${process.env.MONGO_URL}`;
@@ -25,4 +25,4 @@ async function connectToDatabase() {
     return dbInstance;
 }
 
-module.exports = connectToDatabase;
+export default connectToDatabase;

@@ -1,6 +1,11 @@
-require('dotenv').config();
-const MongoClient = require('mongodb').MongoClient;
-const fs = require('fs');
+import 'dotenv/config';
+import { MongoClient } from 'mongodb';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // MongoDB connection URL with authentication options
 let url = `${process.env.MONGO_URL}`;
@@ -9,7 +14,7 @@ const dbName = 'giftdb';
 const collectionName = 'gifts';
 
 // notice you have to load the array of gifts into the data object
-const data = JSON.parse(fs.readFileSync(filename, 'utf8')).docs;
+const data = JSON.parse(readFileSync(filename, 'utf8')).docs;
 
 // connect to database and insert data into the collection
 async function loadData() {
@@ -25,7 +30,7 @@ async function loadData() {
 
         // collection will be created if it does not exist
         const collection = db.collection(collectionName);
-        let cursor = await collection.find({});
+        let cursor = collection.find({});
         let documents = await cursor.toArray();
 
         if(documents.length == 0) {
@@ -45,6 +50,4 @@ async function loadData() {
 
 loadData();
 
-module.exports = {
-    loadData,
-  };
+export { loadData };
