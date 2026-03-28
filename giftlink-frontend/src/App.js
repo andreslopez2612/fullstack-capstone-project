@@ -6,6 +6,8 @@ import { LoginPage } from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import Navbar from './components/Navbar/Navbar';
 import { RegisterPage } from './components/RegisterPage/RegisterPage';
+import SearchPage from './components/SearchPage/SearchPage';
+
 function App() {
   return (
     <>
@@ -16,7 +18,8 @@ function App() {
         <Route path="/app/login" element={<LoginPage />} />
         <Route path="/app/register" element={<RegisterPage />} />
         <Route path="/app/gifts/:productId" element={<DetailsPage />} />
-        <Route path="/app/product/:productId" element={<DetailsPage />} />
+        <Route path="/app/search" element={<SearchPage />} />
+
       </Routes>
     </>
   );

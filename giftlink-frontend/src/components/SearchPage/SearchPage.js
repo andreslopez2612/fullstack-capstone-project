@@ -39,6 +39,8 @@ function SearchPage() {
 
     // Task 2. Fetch search results from the API based on user inputs.
     const handleSearch = async () => {
+        // Construct the search URL based on user input
+        const baseUrl = `${urlConfig.backendUrl}/api/search?`;
         const queryParams = new URLSearchParams({
             name: searchQuery,
             age_years: ageRange,
@@ -47,7 +49,7 @@ function SearchPage() {
         }).toString();
 
         try {
-            const response = await fetch(`${urlConfig}${queryParams}`);
+            const response = await fetch(`${baseUrl}${queryParams}`);
             if (!response.ok) {
                 throw new Error('Search failed');
             }
