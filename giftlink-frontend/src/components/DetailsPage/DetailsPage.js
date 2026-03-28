@@ -29,6 +29,7 @@ function DetailsPage() {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
+                console.log('Fetched gift data:', data);
                 setGift(data);
             } catch (error) {
                 setError(error.message);
@@ -108,12 +109,12 @@ function DetailsPage() {
                     </p>
                     <p><strong>Date Added:</strong>
                         {
-                            gift.dateAdded ? new Date(gift.dateAdded).toLocaleDateString() : 'N/A'
+                            gift.date_added ? new Date(gift.date_added).toLocaleDateString() : 'N/A'
                         }
                     </p>
                     <p><strong>Age (Years):</strong>
                         {
-                            gift.age !== undefined ? gift.age : 'N/A'
+                            gift.age_years !== undefined ? gift.age_years : 'N/A'
                         }
                     </p>
                     <p><strong>Description:</strong>
