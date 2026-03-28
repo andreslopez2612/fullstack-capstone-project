@@ -3,51 +3,46 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
+
 import pinoLogger from './logger.js';
 import connectToDatabase from './models/db.js';
+import giftRoutes from './routes/giftRoutes.js';
+import searchRoutes from './routes/searchRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import './util/import-mongo/index.js';
 
 const app = express();
-app.use("*", cors());
 const port = 3060;
 
-// Connect to MongoDB; we just do this one time
-connectToDatabase().then(() => {
-    pinoLogger.info('Connected to DB');
-})
-    .catch((e) => console.error('Failed to connect to DB', e));
-
-
+// Middleware
+app.use(cors());
 app.use(express.json());
-
-// Route files
-// Gift API Task 1: import the giftRoutes and store in a constant called giftroutes
-//{{insert code here}}
-import giftRoutes from './routes/giftRoutes.js';
-
-// Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
-import searchRoutes from './routes/searchRoutes.js';
-
-
 app.use(pinoHttp({ logger: pinoLogger }));
 
-// Use Routes
-// Gift API Task 2: add the giftRoutes to the server by using the app.use() method.
+// Route registration
 app.use('/api/gifts', giftRoutes);
-
-// Search API Task 2: add the searchRoutes to the server by using the app.use() method.
 app.use('/api/search', searchRoutes);
+app.use('/api/auth', authRoutes);
 
+// Health check
+app.get('/', (req, res) => {
+    res.send('Inside the server');
+});
 
-// Global Error Handler
+// Global error handler
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).send('Internal Server Error');
 });
 
-app.get("/", (req, res) => {
-    res.send("Inside the server")
-})
+// Connect to MongoDB once when the application starts
+connectToDatabase()
+    .then(() => {
+        pinoLogger.info('Connected to DB');
+    })
+    .catch((e) => {
+        console.error('Failed to connect to DB', e);
+    });
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
