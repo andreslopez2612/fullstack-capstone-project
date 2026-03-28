@@ -16,6 +16,7 @@ function App() {
         <Route path="/app/login" element={<LoginPage />} />
         <Route path="/app/register" element={<RegisterPage />} />
         <Route path="/app/gifts/:productId" element={<DetailsPage />} />
+        <Route path="/app/product/:productId" element={<DetailsPage />} />
       </Routes>
     </>
   );
