@@ -1,13 +1,12 @@
-import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import MainPage from './components/MainPage/MainPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
+import DetailsPage from './components/DetailsPage/DetailsPage';
 import { LoginPage } from './components/LoginPage/LoginPage';
+import MainPage from './components/MainPage/MainPage';
+import Navbar from './components/Navbar/Navbar';
 import { RegisterPage } from './components/RegisterPage/RegisterPage';
 function App() {
-  const navigate = useNavigate();
   return (
     <>
       <Navbar />
@@ -16,6 +15,7 @@ function App() {
         <Route path="/app" element={<MainPage />} />
         <Route path="/app/login" element={<LoginPage />} />
         <Route path="/app/register" element={<RegisterPage />} />
+        <Route path="/app/gifts/:productId" element={<DetailsPage />} />
       </Routes>
     </>
   );
