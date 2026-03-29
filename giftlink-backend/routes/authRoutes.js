@@ -14,6 +14,7 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Route: POST /api/auth/register
 router.post('/register', async (req, res) => {
     try {
         // Task 1: Connect to `giftsdb` in MongoDB through `connectToDatabase` in `db.js`
@@ -52,5 +53,46 @@ router.post('/register', async (req, res) => {
         return res.status(500).send('Internal server error');
     }
 });
+
+// Route: POST /api/auth/login
+router.post('/login', async (req, res) => {
+    try {
+        // Task 1: Connect to `giftsdb` in MongoDB through `connectToDatabase` in `db.js`.
+        const db = await connectToDatabase();
+        // Task 2: Access MongoDB `users` collection
+        const collection = db.collection("users");
+        // Task 3: Check for user credentials in database
+        const user = await collection.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid credentials' });
+        }
+
+
+        // Task 4: Task 4: Check if the password matches the encrypyted password and send appropriate message on mismatch
+        const passwordMatch = await bcryptjs.compare(req.body.password, user.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ error: 'Invalid credentials' });
+        }
+
+        // Task 5: Fetch user details from database
+        const userName = `${user.firstName} ${user.lastName}`;
+        const userEmail = user.email;
+
+        const payload = {
+            user: {
+                id: user._id,
+            },
+        };
+        // Task 6: Create JWT authentication if passwords match with user._id as payload
+        const authtoken = jwt.sign(payload, JWT_SECRET);
+
+        res.json({ authtoken, userName, userEmail });
+        // Task 7: Send appropriate message if user not found
+    } catch (e) {
+        return res.status(500).send('Internal server error');
+
+    }
+});
+
 
 export default router;

@@ -1,18 +1,68 @@
 import React, { useState } from 'react'
 
 import './RegisterPage.css';
+import { urlConfig } from '../../config';
+import { useAppContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 export const RegisterPage = () => {
 
+    const url = urlConfig.backendUrl;
 
     //firstName, lastName, email, password
-    const [fistName, setFirstName] = useState('');
+    const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    //error handling
+    const [showerr, setShowerr] = useState('');
+
+
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useAppContext();
+
+
+
     const handleRegister = async (e) => {
         e.preventDefault();
+        try {
+            const response = await fetch(`${url}/api/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                if (data.authtoken) {
+                    sessionStorage.setItem('auth-token', data.authtoken);
+                    sessionStorage.setItem('name', data.firstName);
+                    sessionStorage.setItem('email', data.email);
+                    //Step 2 - Task 3
+                    setIsLoggedIn(true);
+                    //Step 2 - Task 4
+                    navigate('/app');
+                }
+                if (data.error) {
+                    //Step 2 - Task 5
+                    setShowerr(data.error);
+                }
+            } else {
+                alert(data.error || 'Registration failed');
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('An error occurred during registration. Please try again later.');
+        }
     };
 
     return (
@@ -30,7 +80,7 @@ export const RegisterPage = () => {
                                 type="text"
                                 id="firstName"
                                 className="form-control mb-3"
-                                value={fistName}
+                                value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                             />
 
@@ -44,14 +94,20 @@ export const RegisterPage = () => {
                             />
 
                             <label htmlFor="email" className="form-label">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                className="form-control mb-3"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+                            <div className="mb-3">
+                                <label htmlFor="email" className="form-label">Email</label>
+                                <input
+                                    id="email"
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                                {/* Step 2 - Task 6*/}
 
+                                <div className="text-danger">{showerr}</div>
+                            </div>
                             <label htmlFor="password" className="form-label">Password</label>
                             <input
                                 type="password"
