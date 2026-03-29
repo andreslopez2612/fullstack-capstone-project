@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { urlConfig } from '../../config';
-import { useAppContext } from '../../context/AuthContext';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/AuthContext';
 
 export const LoginPage = () => {
     const [email, setEmail] = useState('')
