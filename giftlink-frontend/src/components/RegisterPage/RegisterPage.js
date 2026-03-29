@@ -25,8 +25,7 @@ export const RegisterPage = () => {
 
 
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+    const handleRegister = async () => {
         try {
             const response = await fetch(`${url}/api/auth/register`, {
                 method: 'POST',
@@ -41,7 +40,10 @@ export const RegisterPage = () => {
                 }),
             });
 
+            console.log('Response status:', response.status);
+
             const data = await response.json();
+            console.log('Response data:', data);
             if (response.ok) {
                 if (data.authtoken) {
                     sessionStorage.setItem('auth-token', data.authtoken);
@@ -72,55 +74,52 @@ export const RegisterPage = () => {
                     <div className="register-card p-4 border rounded">
                         <h2 className="text-center mb-4 font-weight-bold">Register</h2>
 
-                        {/* insert code here to create input elements for all the variables - firstName, lastName, email, password */}
-                        <form onSubmit={handleRegister}>
 
-                            <label htmlFor="firstName" className="form-label">First Name</label>
-                            <input
-                                type="text"
-                                id="firstName"
-                                className="form-control mb-3"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                            />
+                        <label htmlFor="firstName" className="form-label">First Name</label>
+                        <input
+                            type="text"
+                            id="firstName"
+                            className="form-control mb-3"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                        />
 
-                            <label htmlFor="lastName" className="form-label">Last Name</label>
-                            <input
-                                type="text"
-                                id="lastName"
-                                className="form-control mb-3"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                            />
+                        <label htmlFor="lastName" className="form-label">Last Name</label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            className="form-control mb-3"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
 
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email</label>
-                            <div className="mb-3">
-                                <label htmlFor="email" className="form-label">Email</label>
-                                <input
-                                    id="email"
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter your email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                {/* Step 2 - Task 6*/}
-
-                                <div className="text-danger">{showerr}</div>
-                            </div>
-                            <label htmlFor="password" className="form-label">Password</label>
                             <input
-                                type="password"
-                                id="password"
-                                className="form-control mb-3"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                id="email"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
+                            {/* Step 2 - Task 6*/}
 
-                            <button type="submit" className="btn btn-primary btn-block mt-3">
-                                Register
-                            </button>
-                        </form>
+                            <div className="text-danger">{showerr}</div>
+                        </div>
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            className="form-control mb-3"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+
+                        <button type="submit" className="btn btn-primary btn-block mt-3" onClick={handleRegister}>
+                            Register
+                        </button>
                         <p className="mt-4 text-center">
                             Already a member? <a href="/app/login" className="text-primary">Login</a>
                         </p>
