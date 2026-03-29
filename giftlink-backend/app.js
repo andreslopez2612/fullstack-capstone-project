@@ -1,14 +1,14 @@
 /*jshint esversion: 8 */
+import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
-import cors from 'cors';
 import pinoHttp from 'pino-http';
 
 import pinoLogger from './logger.js';
 import connectToDatabase from './models/db.js';
+import authRoutes from './routes/authRoutes.js';
 import giftRoutes from './routes/giftRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
-import authRoutes from './routes/authRoutes.js';
 import './util/import-mongo/index.js';
 
 const app = express();
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 // Global error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error(err);
     res.status(500).send('Internal Server Error');
 });
