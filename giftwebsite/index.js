@@ -4,11 +4,8 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
-app.get('/app', function (req, res) {
+// SPA fallback: serve index.html for all routes (except static files)
+app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
