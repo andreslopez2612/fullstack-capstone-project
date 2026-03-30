@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { urlConfig } from '../../config';
 import { useAppContext } from '../../context/AuthContext';
 
 export const LoginPage = () => {
+
+    const url = urlConfig.backendUrl;
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -19,7 +22,7 @@ export const LoginPage = () => {
     const handleLogin = async () => {
         try {
             //first task
-            const response = await fetch(`/api/auth/login`, {
+            const response = await fetch(`${url}/api/auth/login`, {
                 //{{Insert code here}} //Task 7: Set method
                 method: 'POST',
                 //{{Insert code here}} //Task 8: Set headers
